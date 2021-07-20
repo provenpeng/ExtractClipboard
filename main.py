@@ -1,7 +1,7 @@
 import csv
 import re
 import time
-from typing import List
+from typing import List, Dict
 import pyperclip
 
 
@@ -9,14 +9,14 @@ RESULT_FILENAME = 'result.csv'
 CONFIG_FILEPATH = 'config.txt'
 
 
-def write2csv(data: List[object]):
+def write2csv(data: List[object]) -> None:
     with open(RESULT_FILENAME, 'a', encoding='utf-8', newline='') as f:
         writer = csv.writer(f)
         writer.writerow(data)
         print(f"成功写入：{data[0]}, {data[1]}")
 
 
-def parse_data(data, url_tag="下单链接：", coupon_tag="元优惠券"):
+def parse_data(data: str, url_tag="下单链接：", coupon_tag="元优惠券") -> Dict[str, str]:
     return {
         'url': re.search(f'({url_tag})'+r'(https?|ftp|file)://[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]',
                          data, flags=0).group().replace(url_tag, ''),
@@ -24,7 +24,7 @@ def parse_data(data, url_tag="下单链接：", coupon_tag="元优惠券"):
     }
 
 
-def read_data_from_clipboard():
+def read_data_from_clipboard() -> str:
     # 下边2021-07-20的数据
     test_data = """
     居家日用飞科男充电式电动全身水洗胡须刀
